@@ -1,6 +1,8 @@
 # pytest_steep
 
-`pytest_steep` runs tests in an order such that coverage increases as fast as possibly. Typically 99% of the total coverage is achieved in 10% of the test session time.
+`pytest_steep` runs tests in an order such that coverage increases as fast as possible. Typically 99% of the total coverage is achieved in 10% of the test session time.
+
+![example](https://github.com/mikamove/pytest-steep/blob/main/example.png)
 
 ## en detail
 
@@ -18,8 +20,6 @@
     ```shell
     python -m pytest  <ANY ARGS> --steep
 	```
-
-![example](example.png)
 
 ## install
 
