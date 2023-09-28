@@ -25,6 +25,9 @@ jobs:
         run: |
           python -m pip install -U build setuptools wheel twine
           python -m build
+      - name: check
+        run: |
+          python -m twine check dist/*
       - name: publish
         env:
           TWINE_USERNAME: ${{ secrets.TESTPYPI_API_USER }}
