@@ -37,8 +37,8 @@ setup(
     py_modules=['pytest_steep'],
     python_requires='>=3.8',
     install_requires=[
-        'pytest==7.3.1',
-        'pytest-donde>=0.0.1',
+        'pytest>=7.3.1',
+        'pytest-donde>=1.0.0',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

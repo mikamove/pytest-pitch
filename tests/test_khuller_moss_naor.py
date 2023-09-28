@@ -2,7 +2,7 @@
 
 import pytest
 
-from pytest_donde.algorithm import khuller_moss_naor as KMN
+from pytest_steep import khuller_moss_naor as KMN
 
 problem1 = (
     {'a': 1., 'b': 1., 'c': 1.},
