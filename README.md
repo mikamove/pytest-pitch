@@ -25,12 +25,12 @@ in step 2 without updating the record:
 
 ## use in your script
 
-See (this script)[https://github.com/mikamove/pytest-pitch/blob/main/scripts/benchmark_vs_project.py] as a demo which was used to create the image shown above.
+See [this script](https://github.com/mikamove/pytest-pitch/blob/main/scripts/benchmark_vs_project.py) as a demo which was used to create the image shown above.
 
 ## background
 
-The plugin employs an algorithm presented in
-[S. Khuller, A. Moss, J. Naor, The budgeted maximum coverate problem, Inf. Process. Lett. 70, 1999](https://doi.org/10.1016/S0020-0190(99)00031-9) (see p. 3, Algorithm 1).
+The plugin employs **Algorithm 1** from **p. 3** of
+[S. Khuller, A. Moss, J. Naor, The budgeted maximum coverage problem, Inf. Process. Lett. 70, 1999](https://doi.org/10.1016/S0020-0190(99)00031-9).
 
 ## install
 
