@@ -11,7 +11,7 @@ def pytest_addoption(parser):
         action='store_true',
         dest='pitch_active',
         default=None,
-        help='reorder tests for fast increase of coverage using donde json statics file.',
+        help='reorder tests for fast increase of coverage using donde session record.',
     )
     group.addoption(
         '--pitch-in',
@@ -19,7 +19,7 @@ def pytest_addoption(parser):
         dest='pitch_donde_json_path',
         metavar='PATH',
         default='donde.json',
-        help='PATH to donde json statics file, default is "donde.json".',
+        help='set custom PATH to record file, default is "donde.json".',
     )
 
 def pytest_configure(config):
@@ -51,7 +51,11 @@ class PitchSelectorPlugin:
                     self._nodeids_changed = True
                     # FIXME learn about pytest warning mechanism
                     path = config.getoption('pitch_donde_json_path')
-                    print(f'[pitch] the test item {item.nodeid} was not registered in {path} and will be placed at the beginning, consider refreshing your donde json file to match your current test session.')
+                    print(f'[pitch] the test item {item.nodeid} was not registered in {path} '
+                          'and will be placed at the start of the session. '
+                          'Further events of this type will not be logged. '
+                          'If You did not expect this, consider refreshing your donde record '
+                          'to match your current test session.')
                 return -1
 
         items[:] = sorted(items, key=key)
