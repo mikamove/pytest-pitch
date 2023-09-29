@@ -5,8 +5,6 @@ import pytest
 import os
 import shutil
 
-from pytest_donde.outcome import Outcome
-
 ROOT_PATH = os.path.dirname(__file__)+'/..'
 
 def _setup_example(testdir, example_dir):
