@@ -10,21 +10,19 @@ def read(fname):
     file_path = os.path.join(os.path.dirname(__file__), fname)
     return codecs.open(file_path, encoding='utf-8').read()
 
-def replace_version(version):
-    with open('./pytest_steep/__init__.py', 'r') as fi:
-        code = fi.read()
-    with open('./pytest_steep/__init__.py', 'w') as fo:
-        fo.write(code.replace("__version__ = 'dev'", f"__version__ = '{version}'"))
+def package_files(directory):
+    paths = []
+    for (path, _, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join('..', path, filename))
+    return paths
 
-
-version = os.environ.get('CI_STEEP_RELEASE_VERSION', '0.0.1')
-replace_version(version)
+example_files = package_files('examples')
 
 from setuptools import find_packages
-
 setup(
     name='pytest_steep',
-    version=version,
+    version='x.y.z',
     author='Clemens Löbner',
     author_email='mikamove@posteo.de',
     maintainer='Clemens Löbner',
@@ -62,5 +60,6 @@ setup(
         ],
     },
     packages=find_packages(where='.'),
-    package_dir={'': '.'}
-)
+    package_dir={'': '.'},
+    package_data={'': example_files},
+ )
