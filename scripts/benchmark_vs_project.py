@@ -137,9 +137,7 @@ if __name__ == '__main__':
 
     # you way want to comment out this line to reuse the same donde.json,
     # if you just want to change the processing part
-    # b.record()
+    b.record()
 
     outcome = Outcome.from_file(fname_json)
     b.visualize(outcome, example_name='example project', plot_ff=0)
-
-    
