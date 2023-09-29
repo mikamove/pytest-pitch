@@ -100,7 +100,7 @@ class MKRBenchmarker:
         return (duration, coverage)
 
     def _eval_kmn(self, outcome, budget):
-            nindices, duration, coverage = KMN.algorithm_ordered(outcome.nindex_to_duration, outcome.nindex_to_lindices, budget)
+            nindices, duration, coverage = KMN.algorithm(outcome.nindex_to_duration, outcome.nindex_to_lindices, budget)
             nodeids = [outcome.nodeids.from_index(nind) for nind in nindices]
             return nodeids, duration, coverage
 

@@ -38,7 +38,7 @@ class PitchSelectorPlugin:
 
         budget = sum(outcome.nodeid_to_duration(nodeid) for nodeid in outcome.iter_nodeids())
         budget += 0.1 # circumvent float precision issues to ensure we catch all tests
-        nindices, _, _ = KMN.algorithm_ordered(outcome.nindex_to_duration, outcome.nindex_to_lindices, budget)
+        nindices, _, _ = KMN.algorithm(outcome.nindex_to_duration, outcome.nindex_to_lindices, budget)
         return [outcome.nodeids.from_index(nindex) for nindex in nindices]
 
     def pytest_collection_modifyitems(self, items, config):
