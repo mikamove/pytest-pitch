@@ -2,25 +2,11 @@
 
 `pytest_pitch` runs tests in an order such that coverage increases as fast as possible. Typically 99% of the total coverage is achieved in 10% of the test session time.
 
-![example](https://github.com/mikamove/pytest-steep/blob/main/example.png)
-
-## en detail
-
-- the coverage statistics is recorded with `pytest_donde` 
-
-  This creates a `donde.json` file with the following information for every test item:
-  - run duration (sec),
-  - covered lines of code.
-
-- then run your session with
-
-    ```shell
-    python -m pytest  <ANY ARGS> --pitch
-	```
+![example](https://github.com/mikamove/pytest-pitch/blob/main/example.png)
 
 ## use as a plugin
 
-First create persistent time-coverage record via
+First create persistent time-coverage record via [pytest-donde](https://github.com/mikamove/pytest-donde)
 ```shell
 python -m pytest [YOUR SESSION ARGS] --donde=/path/to/src
 ```
