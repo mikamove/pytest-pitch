@@ -5,29 +5,29 @@ from pytest_donde.outcome import Outcome
 from . import khuller_moss_naor as KMN
 
 def pytest_addoption(parser):
-    group = parser.getgroup('steep')
+    group = parser.getgroup('pitch')
     group.addoption(
-        '--steep',
+        '--pitch',
         action='store_true',
-        dest='steep_active',
+        dest='pitch_active',
         default=None,
         help='reorder tests for fast increase of coverage using donde json statics file.',
     )
     group.addoption(
-        '--steep-in',
+        '--pitch-in',
         action='store',
-        dest='steep_donde_json_path',
+        dest='pitch_donde_json_path',
         metavar='PATH',
         default='donde.json',
         help='PATH to donde json statics file, default is "donde.json".',
     )
 
 def pytest_configure(config):
-    if config.getoption('steep_active'):
-        path = config.getoption('steep_donde_json_path')
-        config.pluginmanager.register(SteepSelectorPlugin(path))
+    if config.getoption('pitch_active'):
+        path = config.getoption('pitch_donde_json_path')
+        config.pluginmanager.register(PitchSelectorPlugin(path))
 
-class SteepSelectorPlugin:
+class PitchSelectorPlugin:
 
     def __init__(self, path_input):
         self._nodeids_changed = False
@@ -50,8 +50,8 @@ class SteepSelectorPlugin:
                 if not self._nodeids_changed:
                     self._nodeids_changed = True
                     # FIXME learn about pytest warning mechanism
-                    path = config.getoption('steep_donde_json_path')
-                    print(f'[steep] the test item {item.nodeid} was not registered in {path} and will be placed at the beginning, consider refreshing your donde json file to match your current test session.')
+                    path = config.getoption('pitch_donde_json_path')
+                    print(f'[pitch] the test item {item.nodeid} was not registered in {path} and will be placed at the beginning, consider refreshing your donde json file to match your current test session.')
                 return -1
 
         items[:] = sorted(items, key=key)

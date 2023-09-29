@@ -16,7 +16,7 @@ def _setup_example(testdir, example_dir):
                     os.path.join(str(testdir), 'test_src.py'))
 
 
-@pytest.mark.parametrize('example_dir, pytest_args_donde, pytest_args_steep, expected_nodeids_ordered, expected_nodeids_random', [
+@pytest.mark.parametrize('example_dir, pytest_args_donde, pytest_args_pitch, expected_nodeids_ordered, expected_nodeids_random', [
     ('examples/example01', tuple(), tuple(), [
             'test_src.py::test_f[1-1-1--2]',
             'test_src.py::test_f[1-1-0-16]',
@@ -58,12 +58,12 @@ def _setup_example(testdir, example_dir):
             'test_src.py::test_f[0-1-0-10]',
     ]),
 ])
-def test_recorder_example01(testdir, example_dir, pytest_args_donde, pytest_args_steep, expected_nodeids_ordered, expected_nodeids_random):
+def test_recorder_example01(testdir, example_dir, pytest_args_donde, pytest_args_pitch, expected_nodeids_ordered, expected_nodeids_random):
 
     _setup_example(testdir, example_dir)
 
     testdir.runpytest('-v', '--donde=src', *pytest_args_donde)
-    result = testdir.runpytest('-v', '--steep', *pytest_args_steep)
+    result = testdir.runpytest('-v', '--pitch', *pytest_args_pitch)
 
     # FIXME find out why expressions won't work with closing bracket ...
     lines_ordered = ['*{}*PASSED*'.format(nodeid.rstrip(']')) for nodeid in expected_nodeids_ordered]

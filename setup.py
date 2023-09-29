@@ -21,18 +21,18 @@ example_files = package_files('examples')
 
 from setuptools import find_packages
 setup(
-    name='pytest_steep',
+    name='pytest_pitch',
     version='0.0.1',
     author='Clemens Löbner',
     author_email='mikamove@posteo.de',
     maintainer='Clemens Löbner',
     maintainer_email='mikamove@posteo.de',
     license='MIT',
-    url='https://github.com/mikamove/pytest-steep',
+    url='https://github.com/mikamove/pytest-pitch',
     description='runs tests in an order such that coverage increases as fast as possible',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
-    py_modules=['pytest_steep'],
+    py_modules=['pytest_pitch'],
     python_requires='>=3.8',
     install_requires=[
         'pytest>=7.3.1',
@@ -56,7 +56,7 @@ setup(
     ],
     entry_points={
         'pytest11': [
-            'steep = pytest_steep.plugin',
+            'pitch = pytest_pitch.plugin',
         ],
     },
     packages=find_packages(where='.'),
