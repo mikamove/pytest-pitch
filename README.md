@@ -4,7 +4,7 @@
 
 ![example](https://github.com/mikamove/pytest-pitch/blob/main/example.png)
 
-## use as a plugin
+## use as pytest plugin for faster coverage increase
 
 First create persistent time-coverage record via [pytest-donde](https://github.com/mikamove/pytest-donde)
 ```shell
@@ -22,6 +22,10 @@ in step 2 without updating the record:
 - tests which are unknown to step 1 (e.g. newly defined tests, less strict test selection)
   will be put to the start of the execution order
 - tests which are known to step 1 but missing in step 2 (e.g. removed tests, stricter test selection) will just be filtered out. Any selection mechanisms should not conflict with the reordering.
+
+## use in your script
+
+See (this script)[https://github.com/mikamove/pytest-pitch/blob/main/scripts/benchmark_vs_project.py] as a demo which was used to create the image shown above.
 
 ## install
 

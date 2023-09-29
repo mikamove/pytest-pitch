@@ -17,7 +17,9 @@ def package_files(directory):
             paths.append(os.path.join('..', path, filename))
     return paths
 
-example_files = package_files('examples')
+example_files = []
+example_files += package_files('examples')
+example_files += package_files('scripts')
 
 from setuptools import find_packages
 setup(
