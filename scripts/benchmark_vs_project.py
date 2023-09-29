@@ -97,7 +97,7 @@ class MKRBenchmarker:
         if plot_kmn:
             T_kmn, C_kmn = self.evaluate_data_series_kmn_testflow(outcome, Tmax+0.1)
             self._visualize_conv_plt(T_kmn, C_kmn, Tmax, Cmax, '-', c='lime',
-                                     label='pytest --steep')
+                                     label='pytest --pitch')
 
         plt.xlabel('time $T/T_{tot}$')
         plt.ylabel('coverage $C/C_{tot}$')

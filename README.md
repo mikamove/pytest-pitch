@@ -1,6 +1,6 @@
-# pytest_steep
+# pytest_pitch
 
-`pytest_steep` runs tests in an order such that coverage increases as fast as possible. Typically 99% of the total coverage is achieved in 10% of the test session time.
+`pytest_pitch` runs tests in an order such that coverage increases as fast as possible. Typically 99% of the total coverage is achieved in 10% of the test session time.
 
 ![example](https://github.com/mikamove/pytest-steep/blob/main/example.png)
 
@@ -18,11 +18,11 @@
 - then run your session with
 
     ```shell
-    python -m pytest  <ANY ARGS> --steep
+    python -m pytest  <ANY ARGS> --pitch
 	```
 
 ## install
 
 ```shell
-python -m pip install pytest_steep
+python -m pip install pytest_pitch
 ```
