@@ -27,6 +27,11 @@ in step 2 without updating the record:
 
 See (this script)[https://github.com/mikamove/pytest-pitch/blob/main/scripts/benchmark_vs_project.py] as a demo which was used to create the image shown above.
 
+## background
+
+The plugin employs an algorithm presented in
+[S. Khuller, A. Moss, J. Naor, The budgeted maximum coverate problem, Inf. Process. Lett. 70, 1999](https://doi.org/10.1016/S0020-0190(99)00031-9) (see p. 3, Algorithm 1).
+
 ## install
 
 ```shell
