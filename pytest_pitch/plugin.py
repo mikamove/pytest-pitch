@@ -36,10 +36,13 @@ class PitchSelectorPlugin:
     def _compute_optimal_order(self, path_input):
         outcome = Outcome.from_file(path_input)
 
-        budget = sum(outcome.nodeid_to_duration(nodeid) for nodeid in outcome.iter_nodeids())
+        budget = sum(outcome.nodeid_to_duration.values())
         budget += 0.1 # circumvent float precision issues to ensure we catch all tests
-        nindices, _, _ = KMN.algorithm(outcome.nindex_to_duration, outcome.nindex_to_lindices, budget)
-        return [outcome.nodeids.from_index(nindex) for nindex in nindices]
+
+        print('[pitch] computing optimal test order ...')
+        nodeids, _, _ = KMN.algorithm(outcome.nodeid_to_duration, outcome.nodeid_to_lindices, budget)
+        print('[pitch] computing optimal test order ... done')
+        return nodeids
 
     def pytest_collection_modifyitems(self, items, config):
 

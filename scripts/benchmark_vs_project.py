@@ -49,6 +49,7 @@ class MKRBenchmarker:
 
         if plot_kmn:
             T_kmn, C_kmn = self.compute_session_history_kmn(outcome, Tmax+0.1)
+
             self._visualize_conv_plt(T_kmn, C_kmn, Tmax, Cmax, '-', c='lime',
                                      label='pytest --pitch')
 
@@ -70,13 +71,13 @@ class MKRBenchmarker:
             plt.savefig(fname)
 
     def compute_session_history_normal(self, outcome):
-        nodeids = list(sorted(set(outcome.nodeids.val_to_index)))
+        nodeids = list(sorted(set(outcome.iter_nodeids())))
         return self.compute_session_history(outcome, nodeids)
 
     def evaluate_data_series_fast_first(self, outcome):
         # simulate pytest-fast-first behavior
-        nodeids = list(sorted(set(outcome.nodeids.val_to_index),
-                              key=outcome.nodeid_to_duration))
+        nodeids = list(sorted(set(outcome.iter_nodeids()),
+                              key=outcome.nodeid_to_duration.__getitem__))
         return self.compute_session_history(outcome, nodeids)
 
     def compute_session_history_kmn(self, outcome, budget):
@@ -100,9 +101,11 @@ class MKRBenchmarker:
         return (duration, coverage)
 
     def _eval_kmn(self, outcome, budget):
-            nindices, duration, coverage = KMN.algorithm(outcome.nindex_to_duration, outcome.nindex_to_lindices, budget)
-            nodeids = [outcome.nodeids.from_index(nind) for nind in nindices]
-            return nodeids, duration, coverage
+        t = time()
+        print('computing ...')
+        nodeids, duration, coverage = KMN.algorithm(outcome.nodeid_to_duration, outcome.nodeid_to_lindices, budget)
+        print('computing ... done, t=', time() - t)
+        return nodeids, duration, coverage
 
     def _visualize_conv_plt(self, T, C, Tmax, Cmax, *a, label='', **kw):
         Tn = np.array(T) / Tmax
@@ -119,15 +122,15 @@ class MKRBenchmarker:
         return Tn, Cn, Tn[pos]
 
     def _compute_duration(self, outcome, nodeids):
-        return sum(outcome.nodeid_to_duration(nid) for nid in nodeids)
+        return sum(outcome.nodeid_to_duration[nid] for nid in nodeids)
 
     def _compute_coverage(self, outcome, nodeids):
         covered = set()
         for nodeid in nodeids:
-            nindex = outcome.nodeids.to_index(nodeid)
-            covered.update(outcome.nindex_to_lindices[nindex])
+            covered.update(outcome.nodeid_to_lindices[nodeid])
         return len(covered)
 
+from time import time
 
 if __name__ == '__main__':
     import sys
@@ -137,7 +140,12 @@ if __name__ == '__main__':
 
     # you way want to comment out this line to reuse the same donde.json,
     # if you just want to change the processing part
-    b.record()
+    # b.record()
 
+    t = time()
+    print('processing ', fname_json)
+    print('loading ...')
+    # outcome = Outcome._from_file_oldformat(fname_json)
     outcome = Outcome.from_file(fname_json)
-    b.visualize(outcome, example_name='example project', plot_ff=0)
+    print('loading ... done, t=', time() - t)
+    b.visualize(outcome, example_name='example project', plot_ff=0, fname=fname_json+'.png')

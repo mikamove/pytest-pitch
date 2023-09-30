@@ -1,7 +1,7 @@
 # coding: utf-8
 
 def algorithm(test_id_to_duration, test_id_to_hit_indices, budget):
-    # see https://doi.org/10.1016/S0020-0190(99)00031-9 p. 3, Algorithm 1
+    # see p. 3, Algorithm 1 of https://doi.org/10.1016/S0020-0190(99)00031-9
     # for reference, we use rather cryptic math notation here
 
     i_to_Ti = [T for _, T in sorted(test_id_to_hit_indices.items())]
