@@ -19,7 +19,7 @@ without (or before) implementing a new plugin.
 Additional dependencies may occur as this is not considered as a functional part of the package.
 '''
 
-class MKRBenchmarker:
+class KMNBenchmarker:
 
     def __init__(self, pytest_cmd, src_dir, fname_json):
         self.pytest_cmd = pytest_cmd
@@ -49,7 +49,6 @@ class MKRBenchmarker:
 
         if plot_kmn:
             T_kmn, C_kmn = self.compute_session_history_kmn(outcome, Tmax+0.1)
-
             self._visualize_conv_plt(T_kmn, C_kmn, Tmax, Cmax, '-', c='lime',
                                      label='pytest --pitch')
 
@@ -71,17 +70,17 @@ class MKRBenchmarker:
             plt.savefig(fname)
 
     def compute_session_history_normal(self, outcome):
-        nodeids = list(sorted(set(outcome.iter_nodeids())))
+        nodeids = list(outcome.iter_nodeids())
         return self.compute_session_history(outcome, nodeids)
 
     def evaluate_data_series_fast_first(self, outcome):
         # simulate pytest-fast-first behavior
-        nodeids = list(sorted(set(outcome.iter_nodeids()),
+        nodeids = list(sorted(outcome.iter_nodeids(),
                               key=outcome.nodeid_to_duration.__getitem__))
         return self.compute_session_history(outcome, nodeids)
 
     def compute_session_history_kmn(self, outcome, budget):
-        nodeids, _, _ = self._eval_kmn(outcome, budget)
+        nodeids, _, _ = KMN.algorithm(outcome.nodeid_to_duration, outcome.nodeid_to_lindices, budget)
         return self.compute_session_history(outcome, nodeids)
 
     def compute_session_history(self, outcome, nodeids):
@@ -99,13 +98,6 @@ class MKRBenchmarker:
         duration = self._compute_duration(outcome, nodeids)
         coverage = self._compute_coverage(outcome, nodeids)
         return (duration, coverage)
-
-    def _eval_kmn(self, outcome, budget):
-        t = time()
-        print('computing ...')
-        nodeids, duration, coverage = KMN.algorithm(outcome.nodeid_to_duration, outcome.nodeid_to_lindices, budget)
-        print('computing ... done, t=', time() - t)
-        return nodeids, duration, coverage
 
     def _visualize_conv_plt(self, T, C, Tmax, Cmax, *a, label='', **kw):
         Tn = np.array(T) / Tmax
@@ -130,22 +122,15 @@ class MKRBenchmarker:
             covered.update(outcome.nodeid_to_lindices[nodeid])
         return len(covered)
 
-from time import time
-
 if __name__ == '__main__':
     import sys
 
     pytest_cmd, src_dir, fname_json = sys.argv[1:]
-    b = MKRBenchmarker(pytest_cmd, src_dir, fname_json)
+    b = KMNBenchmarker(pytest_cmd, src_dir, fname_json)
 
-    # you way want to comment out this line to reuse the same donde.json,
+    # you may want to comment out this line to reuse the same donde.json,
     # if you just want to change the processing part
-    # b.record()
+    b.record()
 
-    t = time()
-    print('processing ', fname_json)
-    print('loading ...')
-    # outcome = Outcome._from_file_oldformat(fname_json)
     outcome = Outcome.from_file(fname_json)
-    print('loading ... done, t=', time() - t)
-    b.visualize(outcome, example_name='example project', plot_ff=0, fname=fname_json+'.png')
+    b.visualize(outcome, example_name='example project', plot_ff=0)
