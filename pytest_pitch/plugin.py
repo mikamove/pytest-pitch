@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pytest_donde.outcome import Outcome
+from pytest_donde.record import Record
 
 from . import khuller_moss_naor as KMN
 
@@ -19,7 +19,7 @@ def pytest_addoption(parser):
         dest='pitch_donde_json_path',
         metavar='PATH',
         default='donde.json',
-        help='set custom PATH to record file, default is "donde.json".',
+        help='set custom PATH to donde record file, default is "donde.json".',
     )
 
 def pytest_configure(config):
@@ -34,12 +34,15 @@ class PitchSelectorPlugin:
         self._nodeid_order = self._compute_optimal_order(path_input)
 
     def _compute_optimal_order(self, path_input):
-        outcome = Outcome.from_file(path_input)
+        record = Record.from_file(path_input)
 
-        budget = sum(outcome.nodeid_to_duration(nodeid) for nodeid in outcome.iter_nodeids())
+        budget = sum(record.nodeid_to_duration.values())
         budget += 0.1 # circumvent float precision issues to ensure we catch all tests
-        nindices, _, _ = KMN.algorithm(outcome.nindex_to_duration, outcome.nindex_to_lindices, budget)
-        return [outcome.nodeids.from_index(nindex) for nindex in nindices]
+
+        print('[pitch] computing optimal test order ...')
+        nodeids, _, _ = KMN.algorithm(record.nodeid_to_duration, record.nodeid_to_lindices, budget)
+        print('[pitch] computing optimal test order ... done')
+        return nodeids
 
     def pytest_collection_modifyitems(self, items, config):
 
