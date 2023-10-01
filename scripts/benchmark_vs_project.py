@@ -70,12 +70,12 @@ class KMNBenchmarker:
             plt.savefig(fname)
 
     def compute_session_history_normal(self, outcome):
-        nodeids = list(outcome.iter_nodeids())
+        nodeids = outcome.nodeids()
         return self.compute_session_history(outcome, nodeids)
 
     def evaluate_data_series_fast_first(self, outcome):
         # simulate pytest-fast-first behavior
-        nodeids = list(sorted(outcome.iter_nodeids(),
+        nodeids = list(sorted(outcome.nodeids(),
                               key=outcome.nodeid_to_duration.__getitem__))
         return self.compute_session_history(outcome, nodeids)
 
