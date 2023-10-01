@@ -38,7 +38,7 @@ setup(
     python_requires='>=3.8',
     install_requires=[
         'pytest>=7.3.1',
-        'pytest-donde>=1.0.0', # FIXME increase for API change
+        'pytest-donde>=1.1.0',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
