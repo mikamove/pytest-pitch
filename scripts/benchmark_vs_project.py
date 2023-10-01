@@ -6,7 +6,7 @@ import os
 import shutil
 
 from pytest_pitch import khuller_moss_naor as KMN
-from pytest_donde.outcome import Outcome
+from pytest_donde.record import Record
 
 ''' Demo script to generate (time, coverage) statistics.
 
@@ -32,9 +32,9 @@ class KMNBenchmarker:
         # backup results
         shutil.copy('donde.json', self.fname_json)
 
-    def visualize(self, outcome, example_name=None, fname=None,
+    def visualize(self, record, example_name=None, fname=None,
                   plot_ff=True, plot_kmn=True, plot_normal=True):
-        T_flow, C_flow = self.compute_session_history_normal(outcome)
+        T_flow, C_flow = self.compute_session_history_normal(record)
         Tmax = T_flow[-1]
         Cmax = C_flow[-1]
 
@@ -43,12 +43,12 @@ class KMNBenchmarker:
                                      label='pytest')
 
         if plot_ff:
-            T_ff, C_ff = self.evaluate_data_series_fast_first(outcome)
+            T_ff, C_ff = self.evaluate_data_series_fast_first(record)
             self._visualize_conv_plt(T_ff, C_ff, Tmax, Cmax, '-', c='lime',
                                      label='pytest --fast-first')
 
         if plot_kmn:
-            T_kmn, C_kmn = self.compute_session_history_kmn(outcome, Tmax+0.1)
+            T_kmn, C_kmn = self.compute_session_history_kmn(record, Tmax+0.1)
             self._visualize_conv_plt(T_kmn, C_kmn, Tmax, Cmax, '-', c='lime',
                                      label='pytest --pitch')
 
@@ -69,34 +69,34 @@ class KMNBenchmarker:
         else:
             plt.savefig(fname)
 
-    def compute_session_history_normal(self, outcome):
-        nodeids = outcome.nodeids()
-        return self.compute_session_history(outcome, nodeids)
+    def compute_session_history_normal(self, record):
+        nodeids = record.nodeids()
+        return self.compute_session_history(record, nodeids)
 
-    def evaluate_data_series_fast_first(self, outcome):
+    def evaluate_data_series_fast_first(self, record):
         # simulate pytest-fast-first behavior
-        nodeids = list(sorted(outcome.nodeids(),
-                              key=outcome.nodeid_to_duration.__getitem__))
-        return self.compute_session_history(outcome, nodeids)
+        nodeids = list(sorted(record.nodeids(),
+                              key=record.nodeid_to_duration.__getitem__))
+        return self.compute_session_history(record, nodeids)
 
-    def compute_session_history_kmn(self, outcome, budget):
-        nodeids, _, _ = KMN.algorithm(outcome.nodeid_to_duration, outcome.nodeid_to_lindices, budget)
-        return self.compute_session_history(outcome, nodeids)
+    def compute_session_history_kmn(self, record, budget):
+        nodeids, _, _ = KMN.algorithm(record.nodeid_to_duration, record.nodeid_to_lindices, budget)
+        return self.compute_session_history(record, nodeids)
 
-    def compute_session_history(self, outcome, nodeids):
+    def compute_session_history(self, record, nodeids):
         # compute (time, coverage) value pairs from (0,0) to (1,1)
         # with increasing values for successively adding another nodeid
         T, C = [], []
         for ind in range(len(nodeids)+1):
             nodeids_sub = nodeids[:ind]
-            t, c = self.evaluate_data_point_for_test_selection(outcome, nodeids_sub)
+            t, c = self.evaluate_data_point_for_test_selection(record, nodeids_sub)
             T.append(t)
             C.append(c)
         return T, C
 
-    def evaluate_data_point_for_test_selection(self, outcome, nodeids):
-        duration = self._compute_duration(outcome, nodeids)
-        coverage = self._compute_coverage(outcome, nodeids)
+    def evaluate_data_point_for_test_selection(self, record, nodeids):
+        duration = self._compute_duration(record, nodeids)
+        coverage = self._compute_coverage(record, nodeids)
         return (duration, coverage)
 
     def _visualize_conv_plt(self, T, C, Tmax, Cmax, *a, label='', **kw):
@@ -113,13 +113,13 @@ class KMNBenchmarker:
         plt.plot(Tn, Cn, *a, **kw, label=label)
         return Tn, Cn, Tn[pos]
 
-    def _compute_duration(self, outcome, nodeids):
-        return sum(outcome.nodeid_to_duration[nid] for nid in nodeids)
+    def _compute_duration(self, record, nodeids):
+        return sum(record.nodeid_to_duration[nid] for nid in nodeids)
 
-    def _compute_coverage(self, outcome, nodeids):
+    def _compute_coverage(self, record, nodeids):
         covered = set()
         for nodeid in nodeids:
-            covered.update(outcome.nodeid_to_lindices[nodeid])
+            covered.update(record.nodeid_to_lindices[nodeid])
         return len(covered)
 
 if __name__ == '__main__':
@@ -132,5 +132,5 @@ if __name__ == '__main__':
     # if you just want to change the processing part
     b.record()
 
-    outcome = Outcome.from_file(fname_json)
-    b.visualize(outcome, example_name='example project', plot_ff=0)
+    record = Record.from_file(fname_json)
+    b.visualize(record, example_name='example project', plot_ff=0)
