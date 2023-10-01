@@ -24,7 +24,7 @@ example_files += package_files('scripts')
 from setuptools import find_packages
 setup(
     name='pytest_pitch',
-    version='1.0.4',
+    version='1.0.5',
     author='Clemens Löbner',
     author_email='mikamove@posteo.de',
     maintainer='Clemens Löbner',
