@@ -8,14 +8,13 @@
 
 The main use case is if **waiting for tests slows down Your development workflow**. In this case, if You let pitch reorder Your tests,
 the whole session still takes the same time, but after 10% of this time You aready reach 99% line coverage
-and thus can abort the session session - or go to Your next editing step - while the remaining 90% run,
-**trading 1% residual risk for 90% time saving**.
+and thus can abort the session - or proceed to Your next editing step - **trading 1% residual risk for 90% time saving**.
 Note that these numbers are based on experience, see below on how to visualize them for Your concrete project.
 
 Tests with bad time scaling are a sign for bad code and/or test quality.
-Tragically, for the necessary refactoring, one is even more tied to rely on these slow tests or even add more of them to increase coverage,
+Tragically, for the neccessary refactoring, one is even more tied to rely on these slow tests or even add more of them to increase coverage,
 while the design doesn't allow for effective low-level unit tests.
-This plugin serves as a helper for this painful transition. 
+This plugin serves as a helper for this painful transition.
 
 Its goal is to make itself unneccesary.
 
